@@ -1,0 +1,6 @@
+{
+  "name": "Suraj Sir Portal",
+  "description": "A modern, professional, and responsive Education Portal for learning Science and Mathematics with video lectures, mock tests, books, and interactive study tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { BookOpen, Video, Award, FileText, ChevronRight, GraduationCap, Star, ShieldAlert, Sparkles, Compass } from 'lucide-react';
+import heroBanner from '../assets/images/hero-banner.png';
 
 interface HeroProps {
   setActiveTab: (tab: string) => void;
@@ -86,7 +87,7 @@ export default function Hero({ setActiveTab }: HeroProps) {
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950 text-white text-[11px] font-medium border border-slate-800 shadow-sm"
               >
                 <img 
-                  src="/src/assets/images/Screenshot 2026-07-09 201413.png" 
+                  src={heroBanner} 
                   alt="Suraj Sir" 
                   className="h-5 w-5 rounded-full object-cover border border-blue-400"
                   referrerPolicy="no-referrer"
@@ -198,7 +199,7 @@ export default function Hero({ setActiveTab }: HeroProps) {
                   {/* Classroom Stream Frame */}
                   <div className="relative flex-1 w-full overflow-hidden group">
                     <img
-                      src="/src/assets/images/Screenshot 2026-07-09 201413.png"
+                      src={heroBanner}
                       alt="Suraj Sir teaching Live"
                       className="absolute inset-0 h-full w-full object-cover object-top filter contrast-110 brightness-105 transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"

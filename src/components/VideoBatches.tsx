@@ -14,42 +14,23 @@ import {
   ThumbsUp, 
   Share2, 
   CheckCircle2, 
-  BookMarked 
+  BookMarked,
+  Loader2
 } from 'lucide-react';
 
-interface Lecture {
-  id: string;
-  lectureNumber: string;
-  title: string;
-  duration: string;
-  youtubeId: string;
-  thumbnailUrl: string;
-  description: string;
+function getYouTubeEmbedUrl(input: string): string {
+  if (!input) return '';
+  const trimmed = input.trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+    return `https://www.youtube.com/embed/${trimmed}`;
+  }
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = trimmed.match(regExp);
+  const videoId = (match && match[2].length === 11) ? match[2] : trimmed;
+  return `https://www.youtube.com/embed/${videoId}`;
 }
 
-interface Subject {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  color: string;
-  lectures: Lecture[];
-}
-
-interface Batch {
-  id: string;
-  title: string;
-  tagline: string;
-  description: string;
-  coverImage: string;
-  enrolledText: string;
-  rating: string;
-  subjects: {
-    [key: string]: Subject;
-  };
-}
-
-const BATCHES_DATA: Batch[] = [
+const BATCHES_DATA: PortalBatch[] = [
   {
     id: 'class_10',
     title: 'Class 10th Free Batch',
@@ -290,13 +271,65 @@ const BATCHES_DATA: Batch[] = [
   }
 ];
 
-export default function VideoBatches({ batches }: { batches: PortalBatch[] }) {
+export default function VideoBatches({ batches, isLoading = false }: { batches: PortalBatch[]; isLoading?: boolean }) {
   const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [activeLectureIndex, setActiveLectureIndex] = useState<number>(0);
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-slate-500 space-y-3" id="video-batches-loading">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <p className="text-xs font-semibold uppercase tracking-wider font-mono">Loading dynamic playlist from database...</p>
+      </div>
+    );
+  }
+
+  // Merge static BATCHES_DATA with dynamic batches synced from database
+  const mergedBatches = [...BATCHES_DATA];
+  if (batches && batches.length > 0) {
+    batches.forEach(b => {
+      const idx = mergedBatches.findIndex(mb => mb.id === b.id);
+      if (idx !== -1) {
+        const mergedSubjects = { ...mergedBatches[idx].subjects };
+        Object.entries(b.subjects || {}).forEach(([subId, subData]) => {
+          if (mergedSubjects[subId]) {
+            mergedSubjects[subId] = {
+              ...mergedSubjects[subId],
+              ...subData,
+              lectures: subData.lectures && subData.lectures.length > 0 ? subData.lectures : mergedSubjects[subId].lectures
+            };
+          } else {
+            mergedSubjects[subId] = subData;
+          }
+        });
+        mergedBatches[idx] = {
+          ...mergedBatches[idx],
+          ...b,
+          subjects: mergedSubjects
+        };
+      } else {
+        mergedBatches.push(b);
+      }
+    });
+  }
+
+  if (mergedBatches.length === 0) {
+    return (
+      <div className="bg-white border border-slate-200/60 rounded-3xl p-8 text-center space-y-4" id="video-batches-empty">
+        <Video className="h-12 w-12 text-slate-300 mx-auto" />
+        <div>
+          <h3 className="font-extrabold text-slate-800 text-base">No videos available</h3>
+          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            There are no educational batches or live lectures configured in the portal at this time.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Computed state
-  const currentBatch = batches.find(b => b.id === selectedBatchId);
+  const currentBatch = mergedBatches.find(b => b.id === selectedBatchId);
   const currentSubject = currentBatch && selectedSubjectId ? currentBatch.subjects[selectedSubjectId] : null;
   const currentLecture = currentSubject ? currentSubject.lectures[activeLectureIndex] : null;
 
@@ -365,7 +398,7 @@ export default function VideoBatches({ batches }: { batches: PortalBatch[] }) {
       {/* VIEW A: Batches List (Default) */}
       {!selectedBatchId && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" id="batches-selection-grid">
-          {batches.map((batch) => (
+          {mergedBatches.map((batch) => (
             <div 
               key={batch.id} 
               className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full animate-fadeIn"
@@ -506,7 +539,7 @@ export default function VideoBatches({ batches }: { batches: PortalBatch[] }) {
                 ) : (
                   <iframe
                     id={`yt-player-${currentLecture.id}`}
-                    src={`https://www.youtube.com/embed/${currentLecture.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+                    src={`${getYouTubeEmbedUrl(currentLecture.youtubeId)}?autoplay=1&rel=0&modestbranding=1`}
                     title={currentLecture.title}
                     className="w-full h-full border-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

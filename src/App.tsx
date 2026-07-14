@@ -481,8 +481,15 @@ export default function App() {
             <div className="space-y-3 text-xs">
               <h4 className="text-white text-[10px] uppercase font-bold tracking-widest text-slate-300">Contact Desk</h4>
               <div className="space-y-2 text-slate-500 font-medium">
-                <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-slate-500 shrink-0" /> Sector 4, New Delhi, India</div>
-                <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-slate-500 shrink-0" /> +91 98765 43210</div>
+                <div className="flex gap-2">
+                  <MapPin className="h-4 w-4 text-slate-500 shrink-0 mt-0.5" />
+                  <span>
+                    Remesh Chandra Kushwaha Shop,<br />
+                    Near Petrol Pump, Firozabad Road,<br />
+                    Hathwant
+                  </span>
+                </div>
+                <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-slate-500 shrink-0" /> +91 87916 93178</div>
                 <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-slate-500 shrink-0" /> admissions@surajsirportal.com</div>
               </div>
             </div>

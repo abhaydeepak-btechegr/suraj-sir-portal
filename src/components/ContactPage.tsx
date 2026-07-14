@@ -66,11 +66,13 @@ export default function ContactPage() {
             <div className="space-y-4">
               <div className="flex gap-3">
                 <div className="h-10 w-10 shrink-0 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <MapPin className="h-5 w-5" />
+                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">OFFICE ADDRESS</h4>
-                  <p className="text-sm font-semibold text-slate-800 leading-snug">3rd Floor, Toppers Tower, Near Metro Station, Sector 4, New Delhi - 110001</p>
+                  <p className="text-sm font-semibold text-slate-800 leading-snug">
+                    Remesh Chandra Kushwaha Shop, Near Petrol Pump, Firozabad Road, Hathwant
+                  </p>
                 </div>
               </div>
 
@@ -80,7 +82,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">CALL HELPLINE</h4>
-                  <p className="text-sm font-semibold text-slate-800 leading-snug">+91 98765 43210 / +91 98765 43211</p>
+                  <p className="text-sm font-semibold text-slate-800 leading-snug">+91 87916 93178</p>
                   <p className="text-[10px] text-slate-400">Timing: 9:00 AM - 7:00 PM (Mon to Sun)</p>
                 </div>
               </div>

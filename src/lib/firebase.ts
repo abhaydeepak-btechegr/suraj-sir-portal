@@ -85,12 +85,14 @@ export async function seedDatabaseIfEmpty(
       if (class10Doc) {
         const data = class10Doc.data() as PortalBatch;
         const currentSciLectures = data.subjects?.science?.lectures || [];
-        const hasNewVideo = currentSciLectures.some(l => l.youtubeId === '_FSKjiotREo');
-        if (!hasNewVideo) {
+        const currentIds = currentSciLectures.map(l => l.youtubeId).join(',');
+        const expectedIds = ['_FSKjiotREo', '4ds0eiFnYhE', 'WrtsWQpB7Kg', 'YU6peT7ORM4', 'Qw0-1HffQkE'].join(',');
+        
+        if (currentIds !== expectedIds) {
           console.log('Migrating class_10 to new science lectures...');
           const updatedClass10 = initialPortalBatches.find(b => b.id === 'class_10');
           if (updatedClass10) {
-            await setDoc(class10DocRef, updatedClass10, { merge: true });
+            await setDoc(class10DocRef, updatedClass10);
           }
         }
       }

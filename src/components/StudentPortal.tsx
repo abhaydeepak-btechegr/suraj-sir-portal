@@ -17,6 +17,7 @@ interface StudentPortalProps {
   onAddAnswer: (doubtId: string, text: string, author: string, isTeacher: boolean) => void;
   attempts: TestAttempt[];
   portalBatches: PortalBatch[];
+  isLoading?: boolean;
 }
 
 export default function StudentPortal({
@@ -30,7 +31,8 @@ export default function StudentPortal({
   onAddDoubt,
   onAddAnswer,
   attempts,
-  portalBatches
+  portalBatches,
+  isLoading = false
 }: StudentPortalProps) {
   const [activeSubView, setActiveSubView] = useState<'video_batches' | 'planner' | 'doubts' | 'history'>('video_batches');
 
@@ -116,7 +118,7 @@ export default function StudentPortal({
       {/* Sub panel renders */}
       <div className="space-y-4">
         {activeSubView === 'video_batches' && (
-          <VideoBatches batches={portalBatches} />
+          <VideoBatches batches={portalBatches} isLoading={isLoading} />
         )}
 
         {activeSubView === 'planner' && (

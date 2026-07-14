@@ -1,6 +1,7 @@
 import { useState, useEffect, SetStateAction } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import heroImage from './assets/images/hero-image.jpg.57.33.jpeg';
 import NoticeBoard from './components/NoticeBoard';
 import StudyPlanner from './components/StudyPlanner';
 import DoubtForum from './components/DoubtForum';
@@ -332,6 +333,23 @@ export default function App() {
           >
             {activeTab === 'home' && (
               <div className="space-y-16">
+                {/* Home Page Hero Banner Image */}
+                <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  className="w-full rounded-[24px] overflow-hidden shadow-md bg-slate-100"
+                  id="home-hero-banner"
+                >
+                  <img 
+                    src={heroImage} 
+                    alt="Education Portal Hero Banner" 
+                    className="w-full h-auto aspect-[16/9] sm:aspect-auto md:h-[420px] lg:h-[520px] object-contain md:object-cover transition-all duration-300"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                </motion.div>
+
                 {/* Hero section */}
                 <Hero setActiveTab={setActiveTab} />
 

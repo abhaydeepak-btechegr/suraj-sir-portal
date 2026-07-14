@@ -22,7 +22,7 @@ import {
 
 import { Notice, VideoBatch, Book, MockTest, Doubt, StudyGoal, TestAttempt, PortalBatch } from './types';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Phone, Mail, MapPin, GraduationCap, ArrowUpRight, Youtube, Star, Loader2 } from 'lucide-react';
+import { Sparkles, Phone, Mail, MapPin, GraduationCap, ArrowUpRight, Youtube, Star, Loader2, Facebook, Instagram } from 'lucide-react';
 import { 
   seedDatabaseIfEmpty, 
   syncCollection, 
@@ -443,7 +443,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Branding col */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <div className="bg-blue-600 text-white p-2 rounded-xl">
                   <GraduationCap className="h-6 w-6" />
@@ -453,6 +453,38 @@ export default function App() {
               <p className="text-xs text-slate-500 leading-relaxed font-normal">
                 An advanced digital education portal catering premium video batches, test series CBT exams, and study materials for Mathematics & Sciences.
               </p>
+              <div className="flex items-center gap-3 pt-1">
+                <a 
+                  href="https://www.facebook.com/share/1Lusk8VmrF/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-blue-600 transition-all cursor-pointer" 
+                  title="Follow on Facebook"
+                  id="footer-facebook-link"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/engr_suraj_singh1?igsh=MWRqbHlrdWR3MWw2Zg==" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-pink-600 transition-all cursor-pointer" 
+                  title="Follow on Instagram"
+                  id="footer-instagram-link"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+                <a 
+                  href="https://youtube.com/@thesurajinstitute?si=uH5YjnNCt4E4OKzp" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-red-600 transition-all cursor-pointer" 
+                  title="Subscribe on YouTube"
+                  id="footer-youtube-link"
+                >
+                  <Youtube className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
             {/* Quicklinks col */}
@@ -490,7 +522,7 @@ export default function App() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2"><Phone className="h-4 w-4 text-slate-500 shrink-0" /> +91 87916 93178</div>
-                <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-slate-500 shrink-0" /> admissions@surajsirportal.com</div>
+                <div className="flex items-center gap-2"><Mail className="h-4 w-4 text-slate-500 shrink-0" /> Surajsir8791@gmail.com</div>
               </div>
             </div>
           </div>

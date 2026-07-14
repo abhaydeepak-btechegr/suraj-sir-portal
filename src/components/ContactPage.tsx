@@ -93,7 +93,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">EMAIL SUPPORT</h4>
-                  <p className="text-sm font-semibold text-slate-800 leading-snug">admissions@surajsirportal.com</p>
+                  <p className="text-sm font-semibold text-slate-800 leading-snug">Surajsir8791@gmail.com</p>
                   <p className="text-[10px] text-slate-400">Response guaranteed in 12 Hours</p>
                 </div>
               </div>

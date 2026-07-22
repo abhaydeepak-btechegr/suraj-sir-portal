@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { 
-  getFirestore, 
+  initializeFirestore,
   collection, 
   doc, 
   setDoc, 
@@ -14,23 +14,16 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { PortalBatch, Book, MockTest, Notice, Doubt } from '../types';
-
-// Embedded static fallback configurations
-const firebaseConfig = {
-  apiKey: "AIzaSyBPa7TAZleTemiVDFoYJxuxbG8I-9csAlc",
-  authDomain: "gen-lang-client-0876946794.firebaseapp.com",
-  projectId: "gen-lang-client-0876946794",
-  storageBucket: "gen-lang-client-0876946794.firebasestorage.app",
-  messagingSenderId: "370236440233",
-  appId: "1:370236440233:web:e545ec5e8650529728b3b8",
-  databaseId: "ai-studio-surajsirportal-e35b7d2a-64ff-4441-9fdc-059eab8036a2"
-};
+import firebaseConfig from '../../firebase-applet-config.json';
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with custom databaseId
-export const db = getFirestore(app, firebaseConfig.databaseId);
+// Initialize Firestore with custom databaseId and auto-detect long polling for sandbox stability
+const databaseId = firebaseConfig.firestoreDatabaseId || (firebaseConfig as any).databaseId;
+export const db = initializeFirestore(app, {
+  experimentalAutoDetectLongPolling: true,
+}, databaseId);
 
 // Initialize Storage
 export const storage = getStorage(app);
@@ -142,7 +135,8 @@ export function syncCollection<T>(
   collectionName: string,
   onUpdate: (data: T[]) => void,
   sortField?: string,
-  sortDirection: 'asc' | 'desc' = 'asc'
+  sortDirection: 'asc' | 'desc' = 'asc',
+  onError?: (err: unknown) => void
 ) {
   const colRef = collection(db, collectionName);
   const q = sortField ? query(colRef, orderBy(sortField, sortDirection)) : colRef;
@@ -154,7 +148,8 @@ export function syncCollection<T>(
     });
     onUpdate(list);
   }, (error) => {
-    console.error(`Error syncing collection ${collectionName}:`, error);
+    console.warn(`[Firestore] Sync notice for ${collectionName}:`, error);
+    if (onError) onError(error);
   });
 }
 

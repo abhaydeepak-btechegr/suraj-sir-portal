@@ -11,6 +11,7 @@ import MockTestSystem from './components/MockTestSystem';
 import ContactPage from './components/ContactPage';
 import AdminPanel from './components/AdminPanel';
 import StudentPortal from './components/StudentPortal';
+import Class12Batch from './components/Class12Batch';
 
 import { 
   initialNotices, 
@@ -68,6 +69,11 @@ export default function App() {
     let unsubDoubts: () => void;
     let unsubVideoBatches: () => void;
 
+    // Safety timer to clear loading screen if network is slow
+    const loadingTimeout = setTimeout(() => {
+      if (active) setIsLoading(false);
+    }, 2000);
+
     async function initFirebase() {
       try {
         await seedDatabaseIfEmpty(
@@ -82,26 +88,26 @@ export default function App() {
 
         unsubNotices = syncCollection<Notice>('notices', (data) => {
           if (active) setNotices(data);
-        }, 'date', 'desc');
+        }, 'date', 'desc', () => { if (active) setIsLoading(false); });
 
         unsubPortalBatches = syncCollection<PortalBatch>('portalBatches', (data) => {
           if (active) setPortalBatches(data);
-        });
+        }, undefined, undefined, () => { if (active) setIsLoading(false); });
 
         unsubBooks = syncCollection<Book>('books', (data) => {
           if (active) setBooks(data);
-        });
+        }, undefined, undefined, () => { if (active) setIsLoading(false); });
 
         unsubMockTests = syncCollection<MockTest>('mockTests', (data) => {
           if (active) setMockTests(data);
-        });
+        }, undefined, undefined, () => { if (active) setIsLoading(false); });
 
         unsubDoubts = syncCollection<Doubt>('doubts', (data) => {
           if (active) {
             setDoubts(data);
             setIsLoading(false);
           }
-        }, 'date', 'desc');
+        }, 'date', 'desc', () => { if (active) setIsLoading(false); });
 
         unsubVideoBatches = syncCollection<VideoBatch>('videoBatches', (data) => {
           if (active) {
@@ -111,9 +117,9 @@ export default function App() {
               setVideoBatches(data);
             }
           }
-        });
+        }, undefined, undefined, () => { if (active) setIsLoading(false); });
       } catch (err) {
-        console.error('Failed to initialize and sync Firestore collections:', err);
+        console.warn('Firestore initialization notice:', err);
         if (active) setIsLoading(false);
       }
     }
@@ -122,6 +128,7 @@ export default function App() {
 
     return () => {
       active = false;
+      clearTimeout(loadingTimeout);
       if (unsubNotices) unsubNotices();
       if (unsubPortalBatches) unsubPortalBatches();
       if (unsubBooks) unsubBooks();
@@ -439,6 +446,10 @@ export default function App() {
 
             {activeTab === 'videos' && (
               <VideoPlayer batches={videoBatches} />
+            )}
+
+            {activeTab === 'class12' && (
+              <Class12Batch />
             )}
 
             {activeTab === 'books' && (

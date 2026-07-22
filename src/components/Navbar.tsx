@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BookOpen, Menu, X, Award, Phone, Users, Video, FileText, LayoutDashboard, ShieldAlert } from 'lucide-react';
+import { BookOpen, Menu, X, Award, Phone, Users, Video, FileText, LayoutDashboard, ShieldAlert, GraduationCap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
@@ -15,6 +15,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
     { id: 'student', label: 'Student Portal', icon: LayoutDashboard },
     { id: 'admin', label: 'Admin Panel', icon: ShieldAlert },
     { id: 'videos', label: 'Video Batches', icon: Video },
+    { id: 'class12', label: 'Class 12th Batch', icon: GraduationCap },
     { id: 'books', label: 'Books', icon: FileText },
     { id: 'mock', label: 'Mock Tests', icon: Award },
     { id: 'contact', label: 'Contact', icon: Phone },
